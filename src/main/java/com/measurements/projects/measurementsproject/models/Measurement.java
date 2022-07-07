@@ -26,25 +26,25 @@ public class Measurement {
     private int id;
 
     @Range(min = -100, max = 100, message = "Value should be have value between -100 to 100")
-    @NotNull
+    @NotNull(message = "Value should not be empty")
     @Column(name = "value")
     private Double value;
 
-    @NotNull
+    @NotNull(message = "Raining should not be empty")
     @Column(name = "raining")
     private Boolean raining;
 
-    @NotNull
-    @ManyToOne
+
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "sensor_id")
+    @NotNull(message = "This sensor does not exist")
     private Sensor sensor;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
 
-    public Measurement(Double value, Boolean raining, Sensor sensor) {
+    public Measurement(Double value, Boolean raining) {
         this.value = value;
         this.raining = raining;
-        this.sensor = sensor;
     }
 }

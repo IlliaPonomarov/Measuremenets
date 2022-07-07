@@ -19,13 +19,13 @@ import javax.validation.constraints.NotNull;
 public class MeasurementDTO {
 
     @Range(min = -100, max = 100, message = "Value should be have value between -100 to 100")
-    @NotNull
+    @NotNull(message = "Value should not be empty")
     private Double value;
 
-    @NotNull
+    @NotNull(message = "Raining should not be empty")
     private Boolean raining;
 
-    @NotNull
+    @NotNull(message = "This sensor does not exist")
     private Sensor sensor;
 
     public MeasurementDTO(Double value, Boolean raining, Sensor sensor) {

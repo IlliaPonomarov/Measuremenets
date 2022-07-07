@@ -3,6 +3,7 @@ package com.measurements.projects.measurementsproject.controllers;
 import com.measurements.projects.measurementsproject.dto.MeasurementDTO;
 import com.measurements.projects.measurementsproject.models.Measurement;
 import com.measurements.projects.measurementsproject.services.MeasurementService;
+import com.measurements.projects.measurementsproject.util.MeasurementValidator;
 import com.measurements.projects.measurementsproject.util.SensorValidation;
 import com.measurements.projects.measurementsproject.util.exceptions.ErrorResponse;
 import com.measurements.projects.measurementsproject.util.exceptions.MeasurementsNotCreatedException;
@@ -23,26 +24,26 @@ public class MeasurementsController {
 
     private final MeasurementService measurementService;
     private final ModelMapper modelMapper;
-    private final SensorValidation sensorValidation;
+    private final MeasurementValidator measurementValidator;
 
 
     @Autowired
-    public MeasurementsController(MeasurementService measurementService, ModelMapper modelMapper, SensorValidation sensorValidation) {
+    public MeasurementsController(MeasurementService measurementService, ModelMapper modelMapper, MeasurementValidator measurementValidator) {
         this.measurementService = measurementService;
         this.modelMapper = modelMapper;
-        this.sensorValidation = sensorValidation;
+        this.measurementValidator = measurementValidator;
     }
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> addMeasure(@RequestBody @Valid MeasurementDTO measurementDTO, BindingResult bindingResult){
 
-        sensorValidation.validate(convertMeasurementDTOtoMeasurement(measurementDTO), bindingResult);
+        measurementValidator.validate(convertMeasurementDTOtoMeasurement(measurementDTO), bindingResult);
 
         if (bindingResult.hasErrors()){
 
             StringBuilder messageError = new StringBuilder();
 
-            List<FieldError> fieldErrors = bindingResult.getFieldErrors();;
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
             for(FieldError fieldError : fieldErrors)
                 messageError.append(fieldError.getField())
@@ -53,13 +54,14 @@ public class MeasurementsController {
             throw new MeasurementsNotCreatedException(messageError.toString());
         }
 
+
         measurementService.save(convertMeasurementDTOtoMeasurement(measurementDTO));
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(MeasurementsNotCreatedException exception){
+    private ResponseEntity<ErrorResponse> handleException(MeasurementsNotCreatedException exception){
 
         ErrorResponse response = new ErrorResponse(
                 exception.getMessage(),

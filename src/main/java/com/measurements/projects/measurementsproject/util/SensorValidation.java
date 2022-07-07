@@ -10,7 +10,7 @@ import org.springframework.validation.Validator;
 @Component
 public class SensorValidation implements Validator {
 
-    private SensorsService sensorsService;
+    private final SensorsService sensorsService;
 
 
     @Autowired

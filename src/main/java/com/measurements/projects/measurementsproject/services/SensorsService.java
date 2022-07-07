@@ -29,6 +29,9 @@ public class SensorsService {
     }
 
     public Optional<Sensor> findByName(String name){
+
+        Optional<Sensor> sensor = sensorsRepository.findByName(name);
+
         return sensorsRepository.findByName(name);
     }
 
