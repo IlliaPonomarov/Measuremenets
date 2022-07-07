@@ -44,6 +44,15 @@ public class MeasurementsController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/rainyDaysCount")
+    public int rainyDaysCount(){
+        int n = measurementService.findByRainingTrue();
+
+        System.out.println(n);
+
+        return n;
+    }
+
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> addMeasure(@RequestBody @Valid MeasurementDTO measurementDTO, BindingResult bindingResult){

@@ -29,6 +29,10 @@ public class MeasurementService {
         return measurementsRepository.findAll();
     }
 
+    public int findByRainingTrue(){
+        return measurementsRepository.findByCountingRainingTrue();
+    }
+
     @Transactional
     public void save(Measurement measurement){
 
