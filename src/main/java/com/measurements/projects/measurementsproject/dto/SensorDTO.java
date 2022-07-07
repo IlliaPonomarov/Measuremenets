@@ -8,8 +8,6 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
 @NoArgsConstructor
 public class SensorDTO {
 
@@ -21,4 +19,12 @@ public class SensorDTO {
         this.name = name;
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

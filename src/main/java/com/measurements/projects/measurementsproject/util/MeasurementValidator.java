@@ -8,13 +8,12 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class SensorValidation implements Validator {
+public class MeasurementValidator implements Validator {
 
-    private SensorsService sensorsService;
-
+    private final SensorsService sensorsService;
 
     @Autowired
-    public SensorValidation(SensorsService sensorsService) {
+    public MeasurementValidator(SensorsService sensorsService) {
         this.sensorsService = sensorsService;
     }
 
@@ -28,10 +27,9 @@ public class SensorValidation implements Validator {
 
         Sensor sensor = (Sensor) target;
 
-        System.out.println(sensor.getName());
+        if (sensorsService.findByName(sensor.getName()).isEmpty())
+            errors.rejectValue("sensor", "", "This Sensor does not exist.");
 
-        if (sensorsService.findByName(sensor.getName()).isPresent()) {
-            errors.rejectValue("name", "", "Sensor with this name is exist.");
-        }
+
     }
 }
