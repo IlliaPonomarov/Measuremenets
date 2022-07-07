@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -23,6 +23,10 @@ public class MeasurementService {
     public MeasurementService(MeasurementsRepository measurementsRepository, SensorsService sensorsService) {
         this.measurementsRepository = measurementsRepository;
         this.sensorsService = sensorsService;
+    }
+
+    public List<Measurement> findAll(){
+        return measurementsRepository.findAll();
     }
 
     @Transactional

@@ -1,9 +1,12 @@
 package com.measurements.projects.measurementsproject.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -17,6 +20,7 @@ import java.time.LocalDateTime;
 @Table(name = "measurement")
 @Getter
 @Setter
+
 @NoArgsConstructor
 public class Measurement {
 
@@ -38,6 +42,7 @@ public class Measurement {
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "sensor_id")
     @NotNull(message = "This sensor does not exist")
+    @JsonBackReference
     private Sensor sensor;
 
     @Column(name = "created_at")
@@ -46,5 +51,18 @@ public class Measurement {
     public Measurement(Double value, Boolean raining) {
         this.value = value;
         this.raining = raining;
+    }
+
+
+    @Override
+    public String toString() {
+        return
+                "id: " + id +
+                "\nvalue: " + value +
+                "\nraining: " + raining +
+                "\nsensor: " + sensor.getName()
+
+                        +
+                "\ncreatedAt: " + createdAt;
     }
 }

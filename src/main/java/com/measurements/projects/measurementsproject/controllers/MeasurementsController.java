@@ -4,7 +4,6 @@ import com.measurements.projects.measurementsproject.dto.MeasurementDTO;
 import com.measurements.projects.measurementsproject.models.Measurement;
 import com.measurements.projects.measurementsproject.services.MeasurementService;
 import com.measurements.projects.measurementsproject.util.MeasurementValidator;
-import com.measurements.projects.measurementsproject.util.SensorValidation;
 import com.measurements.projects.measurementsproject.util.exceptions.ErrorResponse;
 import com.measurements.projects.measurementsproject.util.exceptions.MeasurementsNotCreatedException;
 import org.modelmapper.ModelMapper;
@@ -15,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 @RestController
@@ -33,6 +33,17 @@ public class MeasurementsController {
         this.modelMapper = modelMapper;
         this.measurementValidator = measurementValidator;
     }
+
+
+    @GetMapping
+    public List<MeasurementDTO> getAllMeasurements(){
+
+       measurementService.findAll().forEach(System.out::println);
+
+        return measurementService.findAll().stream().map(this::convertMeasurementToMeasurementDTO)
+                .collect(Collectors.toList());
+    }
+
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> addMeasure(@RequestBody @Valid MeasurementDTO measurementDTO, BindingResult bindingResult){
@@ -71,10 +82,12 @@ public class MeasurementsController {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-
-
     private Measurement convertMeasurementDTOtoMeasurement(MeasurementDTO measurementDTO){
         return modelMapper.map(measurementDTO, Measurement.class);
+    }
+
+    private MeasurementDTO convertMeasurementToMeasurementDTO(Measurement measurement){
+        return modelMapper.map(measurement, MeasurementDTO.class);
     }
 
 

@@ -1,6 +1,7 @@
 package com.measurements.projects.measurementsproject.models;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class Sensor {
     private String name;
 
     @OneToMany(mappedBy = "sensor", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Measurement> measurementList;
 
     public Sensor(String name) {
