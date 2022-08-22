@@ -1,18 +1,23 @@
 package com.measurements.projects.measurementsproject.controllers;
 
 import com.measurements.projects.measurementsproject.dto.MeasurementDTO;
+import com.measurements.projects.measurementsproject.dto.SensorDTO;
 import com.measurements.projects.measurementsproject.models.Measurement;
+import com.measurements.projects.measurementsproject.models.Sensor;
 import com.measurements.projects.measurementsproject.services.MeasurementService;
 import com.measurements.projects.measurementsproject.util.MeasurementValidator;
 import com.measurements.projects.measurementsproject.util.exceptions.ErrorResponse;
 import com.measurements.projects.measurementsproject.util.exceptions.MeasurementsNotCreatedException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -43,6 +48,13 @@ public class MeasurementsController {
         return measurementService.findAll().stream().map(this::convertMeasurementToMeasurementDTO)
                 .collect(Collectors.toList());
     }
+
+
+    @GetMapping("/1000")
+    public void test(){
+        measurementService.test1000();
+    }
+
 
     @GetMapping("/rainyDaysCount")
     public int rainyDaysCount(){
